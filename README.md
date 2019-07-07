@@ -1,4 +1,4 @@
-#DiscordRPC.py
+# DiscordRPC.py
 A complete RPC interface for Discord's API.
 
 _Original code by [qwertyquerty and LewdNeko](https://github.com/qwertyquerty/pypresence)_
