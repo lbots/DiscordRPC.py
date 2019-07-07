@@ -13,7 +13,7 @@ from .payloads import Payload
 from .response import Response
 
 
-__title__ = 'DiscordRPC.py'
+__title__ = 'discordrpc'
 __author__ = 'LBots'
 __copyright__ = 'Copyright 2019 LBots'
 __license__ = 'MIT'
