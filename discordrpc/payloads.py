@@ -1,4 +1,5 @@
 import json
+import os
 from time import time
 from typing import List, Union
 
@@ -27,16 +28,16 @@ class Payload:
         return json.dumps(self.data)
 
     @classmethod
-    def set_activity(cls, pid: int,
-                     state: str, details: str,
-                     start: int, end: int,
-                     large_image: str, large_text: str ,
-                     small_image: str, small_text: str,
-                     party_id: str, party_size: list,
-                     join: str, spectate: str,
-                     match: str, instance: bool,
-                     activity: Union[bool, None],
-                     _rn: bool = False):
+    def set_activity(cls, pid: int = os.getpid(),
+                     state: str = None, details: str = None,
+                     start: int = None, end: int = None,
+                     large_image: str = None, large_text: str = None,
+                     small_image: str = None, small_text: str = None,
+                     party_id: str = None, party_size: list = None,
+                     join: str = None, spectate: str = None,
+                     match: str = None, instance: bool = True,
+                     activity: Union[bool, None] = True,
+                     _rn: bool = True):
 
         if start:
             start = int(start)

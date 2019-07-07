@@ -253,7 +253,6 @@ class Client(AioClient):
     def set_user_voice_settings(self, user_id: str, pan_left: float = None,
                                 pan_right: float = None, volume: int = 100,
                                 mute: bool = False):
-
         return self.run_super('set_user_voice_settings', user_id, pan_left, pan_right, volume, mute)
 
     def select_voice_channel(self, channel_id: str):

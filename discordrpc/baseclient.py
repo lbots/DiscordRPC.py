@@ -37,6 +37,7 @@ class BaseClient(ABC):
 
         self.sock_reader = None  # type: asyncio.StreamReader
         self.sock_writer = None  # type: asyncio.StreamWriter
+        self.connection_open = False
 
         self.client_id = client_id
 
@@ -134,6 +135,7 @@ class BaseClient(ABC):
                 raise InvalidPipe
         self.send_data(0, {'v': 1, 'client_id': self.client_id})
         data = await self.sock_reader.read(1024)
+        self.connection_open = True
         code, length = struct.unpack('<ii', data[:8])
         if self._events_on:
             self.sock_reader.feed_data = self.on_event
