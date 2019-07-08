@@ -7,13 +7,14 @@ This whole thing is a big TODO right now...
 
 ---
 ### Installation
-Install from pip
+Install from pip:
+`pip install DiscordRPC.py`
 
 ### Extending BaseClient
 If you are looking to extend BaseClient and implement your own behaviour / set of endpoints, please remember to implement the following:
 - `close` - a way of tidying up any open files or the event loop
 - `on_event` - If you do not want events, this can just `pass`, but if you do then you must handle them accordingly. The only argument passed is data, a dictionary created from Discord's event structure. You must be subscribed to receive these.
-
+Please also remember that you will have to start the connection (`self.handshake`) and you can send data to the RPC with `self.send_data`. Please read the example for more info.
 ---
 #### How to Use
 
