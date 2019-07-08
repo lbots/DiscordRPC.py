@@ -4,9 +4,9 @@ from collections import Mapping
 class Response(Mapping):
     """ Read-only object that represents a response from Discord.
      Shortcuts any key value pairs in nested dict 'data'. """
-    def __init__(self, status_code: int, _dict: dict = {}, **kwargs):
+    def __init__(self, status_code: int, data: dict = {}, **kwargs):
         self.status_code = status_code
-        self._dict = _dict or dict(kwargs)
+        self._dict = data or kwargs
         for k in self._dict.get('data', ()):
             self._dict[k] = self._dict['data'][k]
 
