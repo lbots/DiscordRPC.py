@@ -6,10 +6,11 @@ from typing import List, Union
 from .utils import remove_none
 
 
-def generic_payload(cmd: str, args: dict, event=None):
+def generic_payload(cmd: str, **kwargs):
+    event = kwargs.pop('event')
     payload = {
         "cmd": cmd,
-        "args": args,
+        "args": kwargs,
         "nonce": "{:.20f}".format(time())
     }
     if event:
@@ -88,82 +89,72 @@ class Payload:
 
     @classmethod
     def authorize(cls, client_id: str, scopes: List[str]):
-        payload = generic_payload('AUTHORIZE', {"client_id": client_id, "scopes": scopes})
+        payload = generic_payload('AUTHORIZE', client_id=client_id, scopes=scopes)
         return cls(payload)
 
     @classmethod
     def authenticate(cls, token: str):
-        payload = generic_payload('AUTHENTICATE', {"access_token": token})
+        payload = generic_payload('AUTHENTICATE', access_token=token)
         return cls(payload)
 
     @classmethod
     def get_guilds(cls):
-        payload = generic_payload("GET_GUILDS", {})
+        payload = generic_payload("GET_GUILDS")
         return cls(payload)
 
     @classmethod
     def get_guild(cls, guild_id: str):
-        payload = generic_payload("GET_GUILD", {"guild_id": guild_id})
+        payload = generic_payload("GET_GUILD", guild_id=guild_id)
         return cls(payload)
 
     @classmethod
     def get_channels(cls, guild_id: str):
-        payload = generic_payload("GET_CHANNELS", {"guild_id": guild_id})
+        payload = generic_payload("GET_CHANNELS", guild_id=guild_id)
         return cls(payload)
 
     @classmethod
     def get_channel(cls, channel_id: str):
-        payload = generic_payload("GET_CHANNEL", {"channel_id": channel_id})
+        payload = generic_payload("GET_CHANNEL", channel_id=channel_id)
         return cls(payload)
 
     @classmethod
     def set_user_voice_settings(cls, user_id: str, pan_left: float,
                                 pan_right: float, volume: int,
                                 mute: bool):
-        payload = generic_payload("SET_USER_VOICE_SETTINGS", {
-            "user_id": user_id,
-            "pan": {
-                "left": pan_left,
-                "right": pan_right,
-            },
-            "volume": volume,
-            "mute": mute
-        })
+        payload = generic_payload("SET_USER_VOICE_SETTINGS",
+                                  user_id=user_id,
+                                  pan={
+                                      "left": pan_left,
+                                      "right": pan_right,
+                                  },
+                                  volume=volume,
+                                  mute=mute
+                                  )
         return cls(payload, True)
 
     @classmethod
     def select_voice_channel(cls, channel_id: str):
-        payload = generic_payload("SELECT_VOICE_CHANNEL", {"channel_id": channel_id})
+        payload = generic_payload("SELECT_VOICE_CHANNEL", channel_id=channel_id)
         return cls(payload)
 
     @classmethod
     def get_selected_voice_channel(cls):
-        payload = generic_payload("GET_SELECTED_VOICE_CHANNEL", {})
+        payload = generic_payload("GET_SELECTED_VOICE_CHANNEL")
         return cls(payload)
 
     @classmethod
     def select_text_channel(cls, channel_id: str, timeout: int):
-        payload = generic_payload("SELECT_VOICE_CHANNEL", {"channel_id": channel_id, "timeout": timeout})
+        payload = generic_payload("SELECT_VOICE_CHANNEL", channel_id=channel_id, timeout=timeout)
         return cls(payload)
 
     @classmethod
     def subscribe(cls, event: str, args: dict):
-        payload = {
-            "cmd": "SUBSCRIBE",
-            "args": args,
-            "evt": event.upper(),
-            "nonce": '{:.20f}'.format(time())
-        }
+        payload = generic_payload("SUBSCRIBE", event=event.upper(), **args)
         return cls(payload)
 
     @classmethod
     def unsubscribe(cls, event: str, args: dict):
-        payload = {
-            "cmd": "UNSUBSCRIBE",
-            "args": args,
-            "evt": event.upper(),
-            "nonce": '{:.20f}'.format(time())
-        }
+        payload = generic_payload("UNSUBSCRIBE", event=event.upper(), **args)
         return cls(payload)
 
     @classmethod
@@ -197,22 +188,22 @@ class Payload:
 
     @classmethod
     def capture_shortcut(cls, action: str):
-        payload = generic_payload("CAPTURE_SHORTCUT", {"action": action.upper()})
+        payload = generic_payload("CAPTURE_SHORTCUT", action=action.upper())
         return cls(payload)
 
     @classmethod
     def set_certified_devices(cls, devices: List[dict]):
         """ Only used by hardware manufacturers to send information
         about device state to Discord. See docs for Object spec if you need this. """
-        payload = generic_payload("SET_CERTIFIED_DEVICES", {"devices": devices})
+        payload = generic_payload("SET_CERTIFIED_DEVICES", devices=devices)
         return cls(payload)
 
     @classmethod
     def send_activity_join_invite(cls, user_id: str):
-        payload = generic_payload("SEND_ACTIVITY_JOIN_INVITE", {"user_id": user_id})
+        payload = generic_payload("SEND_ACTIVITY_JOIN_INVITE", user_id=user_id)
         return cls(payload)
 
     @classmethod
     def close_activity_request(cls, user_id: str):
-        payload = generic_payload("CLOSE_ACTIVITY_REQUEST", {"user_id": user_id})
+        payload = generic_payload("CLOSE_ACTIVITY_REQUEST", user_id=user_id)
         return cls(payload)

@@ -1,6 +1,6 @@
 from setuptools import setup
 
-# Credit to qwertyquerty for this setup file.
+# Credit to qwertyquerty for this setup file, even though it's just the twine tutorial one with a bit more, lol.
 with open('README.md') as f:
     long_description = f.read()
 
